@@ -39,11 +39,15 @@ const CTA_STYLE = ['직설', '혜택강조', '한정', 'FOMO', '사회적증거'
 
 export default function OptionsPanel({ value, onChange }: OptionsPanelProps) {
   const handleChange = (field: string, subfield: string, v: string | boolean | number) => {
-    if (field === 'targeting' || field === 'style' || field === 'constraints') {
+    if (
+      (field === 'targeting' || field === 'style' || field === 'constraints') &&
+      typeof value[field as keyof typeof value] === 'object' &&
+      value[field as keyof typeof value] !== null
+    ) {
       onChange({
         ...value,
         [field]: {
-          ...value[field as keyof typeof value],
+          ...(value[field as keyof typeof value] as object),
           [subfield]: v,
         },
       });
