@@ -38,7 +38,7 @@ const OBJECTIVE = ['클릭', '가입', '장바구니', '구매', '앱설치', '�
 const CTA_STYLE = ['직설', '혜택강조', '한정', 'FOMO', '사회적증거', '질문형'];
 
 export default function OptionsPanel({ value, onChange }: OptionsPanelProps) {
-  const handleChange = (field: string, subfield: string, v: any) => {
+  const handleChange = (field: string, subfield: string, v: string | boolean | number) => {
     if (field === 'targeting' || field === 'style' || field === 'constraints') {
       onChange({
         ...value,

@@ -14,15 +14,15 @@ const DEFAULT_OPTIONS: OptionsPanelValue = {
 };
 
 export default function HomePage() {
-  const [form, setForm] = useState<ValuePropFormData | null>(null);
+  const [form, _setForm] = useState<ValuePropFormData | null>(null);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<{ variants: Array<{ id: string; headline: string; body: string; cta: string; hashtags: string[]; emojis_used: boolean; platform_fit: Record<string, { chars: number; policy_notes: string[] }> }> } | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<string | { error: string; details?: string; raw?: string } | null>(null);
 
   const handleFormSubmit = (data: ValuePropFormData) => {
-    setForm(data);
+    _setForm(data);
     setResult(null);
     setError(null);
     setActiveTab(0);
@@ -59,8 +59,9 @@ export default function HomePage() {
       }
       const json = await res.json();
       setResult(json);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e);
+      setError(msg);
     } finally {
       setLoading(false);
     }

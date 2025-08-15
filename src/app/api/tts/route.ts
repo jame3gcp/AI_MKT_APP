@@ -28,7 +28,8 @@ export async function POST(req: NextRequest) {
         'Content-Disposition': 'inline; filename="speech.mp3"',
       },
     });
-  } catch (e: any) {
-    return new Response('TTS 변환 오류: ' + (e.message || e.toString()), { status: 500 });
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return new Response('TTS 변환 오류: ' + msg, { status: 500 });
   }
 }

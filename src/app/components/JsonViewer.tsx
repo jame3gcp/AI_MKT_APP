@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 export type JsonViewerProps = {
-  data: any;
+  data: { id: string; headline: string; body: string; cta: string; hashtags: string[]; emojis_used: boolean; platform_fit?: Record<string, { chars: number; policy_notes: string[] }> };
   abCount: number;
   activeTab: number;
   onTabChange: (idx: number) => void;
@@ -39,8 +39,9 @@ export default function JsonViewer({ data, abCount, activeTab, onTabChange }: Js
         audioRef.current.src = url;
         audioRef.current.play();
       }
-    } catch (e: any) {
-      alert(e.message || '음성 변환 오류');
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : '음성 변환 오류';
+      alert(msg);
     } finally {
       setAudioLoading(false);
     }
@@ -92,7 +93,7 @@ export default function JsonViewer({ data, abCount, activeTab, onTabChange }: Js
             <li>
               <b>플랫폼별 길이/정책:</b>
               <ul className="ml-4 list-disc">
-                {Object.entries(data.platform_fit).map(([platform, fit]: any) => (
+                {Object.entries(data.platform_fit).map(([platform, fit]: [string, { chars: number; policy_notes: string[] }]) => (
                   <li key={platform}>
                     <b>{platform}:</b> {fit.chars}자
                     {fit.policy_notes && fit.policy_notes.length > 0 && (
