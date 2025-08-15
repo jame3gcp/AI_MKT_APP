@@ -36,7 +36,8 @@ export async function POST(req: NextRequest) {
     try {
       result = JSON.parse(completion.choices[0].message.content || '');
     } catch (e) {
-      return NextResponse.json({ error: 'OpenAI 응답 파싱 오류', details: e.message, raw: completion.choices[0].message.content }, { status: 502 });
+      const msg = e instanceof Error ? e.message : String(e);
+      return NextResponse.json({ error: 'OpenAI 응답 파싱 오류', details: msg, raw: completion.choices[0].message.content }, { status: 502 });
     }
     return NextResponse.json(result);
   } catch (e: any) {
