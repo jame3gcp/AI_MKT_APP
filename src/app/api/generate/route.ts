@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const parsed = InputSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: '입력값 검증 실패', details: parsed.error.errors }, { status: 400 });
+      return NextResponse.json({ error: '입력값 검증 실패', details: parsed.error.issues }, { status: 400 });
     }
     const input = parsed.data;
     const prompt = buildPrompt(input);
